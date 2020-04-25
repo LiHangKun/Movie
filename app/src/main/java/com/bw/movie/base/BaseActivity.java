@@ -11,7 +11,7 @@ import butterknife.Unbinder;
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseView{
     P mPresenter;
-    protected Unbinder mBinder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -21,7 +21,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         setContentView(getLayout());
 
-        mBinder = ButterKnife.bind(this);
+        ButterKnife.bind(this);
         mPresenter = initPresenter();
 
         initView();

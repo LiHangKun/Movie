@@ -2,6 +2,7 @@ package com.bw.movie.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -22,13 +23,18 @@ import com.bw.movie.presenter.HomePageRegPresenter;
 import com.bw.movie.util.EncryptUtil;
 
 import butterknife.BindView;
+
 import butterknife.OnClick;
 
 public class RegActivity extends BaseActivity implements HomePageRegContral.getView {
 
 
+
+    int a = 60;
     @BindView(R.id.reg_zuo)
     ImageView regZuo;
+    @BindView(R.id.yiyouzhanghao)
+    TextView yiyouzhanghao;
     @BindView(R.id.reg_nicheng)
     EditText regNicheng;
     @BindView(R.id.reg_you)
@@ -39,11 +45,8 @@ public class RegActivity extends BaseActivity implements HomePageRegContral.getV
     EditText regYan;
     @BindView(R.id.reg_huo)
     TextView regHuo;
-    @BindView(R.id.yiyouzhanghao)
-    TextView yiyouzhanghao;
     @BindView(R.id.zhu)
     Button zhu;
-    int a = 60;
 
     @Override
     public BasePresenter initPresenter() {
@@ -140,4 +143,5 @@ public class RegActivity extends BaseActivity implements HomePageRegContral.getV
         Intent intent = new Intent(RegActivity.this, LoginActivity.class);
         startActivity(intent);
     }
+
 }

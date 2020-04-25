@@ -1,37 +1,35 @@
 package com.bw.movie.xiangqing_apdapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-
+import com.bumptech.glide.Glide;
 import com.bw.movie.R;
-import com.facebook.binaryresource.FileBinaryResource;
-import com.facebook.cache.common.SimpleCacheKey;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class JuZhaoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     List<String> list;
+
+
+    private PhotoViewAttacher mAttacher;
     private View view;
-    private Bitmap bitmap;
+
 
     public JuZhaoAdapter(Context context, List<String> list) {
         this.context = context;
         this.list = list;
+
     }
 
     @NonNull
@@ -43,10 +41,13 @@ public class JuZhaoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        String s = list.get(position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+       /* String s = list.get(position);
         Uri uri = Uri.parse(s);
-        ((ViewHolder)holder).iv.setImageURI(uri);
+        ((ViewHolder)holder).iv.setImageURI(uri);*/
+        Glide.with(context).load(list.get(position)).into(((ViewHolder)holder).photoview);
+
+
     }
 
     @Override
@@ -54,13 +55,12 @@ public class JuZhaoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-
-        private final SimpleDraweeView iv;
-
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.photoview)
+        ImageView photoview;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            iv = itemView.findViewById(R.id.iv);
+            ButterKnife.bind(this, itemView);
         }
     }
 
