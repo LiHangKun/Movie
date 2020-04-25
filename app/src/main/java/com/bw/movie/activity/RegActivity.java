@@ -55,7 +55,7 @@ public class RegActivity extends BaseActivity implements HomePageRegContral.getV
 
     @Override
     public int getLayout() {
-        return R.layout.activity_main;
+        return R.layout.reg_reg;
     }
 
     @Override
