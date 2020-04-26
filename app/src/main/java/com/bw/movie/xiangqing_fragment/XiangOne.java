@@ -1,9 +1,11 @@
 package com.bw.movie.xiangqing_fragment;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +46,25 @@ public class XiangOne extends BaseFragment implements HomePageXiangQingContral.g
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        showDialog();
+    }
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
     protected void initView(View inflate) {
+        jieshaoRe.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+        jieshaoRetwo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         int id = SPUtils.getInt(getContext(), "id", "id");
         BasePresenter basePresenter = getmPresenter();
         if(basePresenter instanceof HomePageXiangQingPresenter){
@@ -70,6 +90,7 @@ public class XiangOne extends BaseFragment implements HomePageXiangQingContral.g
 
     @Override
     public void getXiangQingSucc(XiangQingBean xiangQingBean) {
+        hindDialog();
         jieshaoJieshao.setText(xiangQingBean.getResult().getSummary()+"");
         jieshoaDaoyan.setText("导演("+xiangQingBean.getResult().getMovieDirector().size()+")");
         GridLayoutManager gridLayoutManagertwo = new GridLayoutManager(getContext(), 4);

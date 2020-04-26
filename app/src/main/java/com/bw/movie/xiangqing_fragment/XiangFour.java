@@ -1,6 +1,7 @@
 package com.bw.movie.xiangqing_fragment;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,9 @@ import com.bw.movie.contral.HomePageYingPingContral;
 import com.bw.movie.presenter.HomePageYingPingPresenter;
 import com.bw.movie.util.SPUtils;
 import com.bw.movie.xiangqing_apdapter.YingPingAdapter;
+import com.facebook.cache.disk.DiskCacheConfig;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +60,7 @@ public class XiangFour extends BaseFragment implements HomePageYingPingContral.g
         yingRe.setLayoutManager(linearLayoutManager);
         YingPingAdapter yingPingAdapter = new YingPingAdapter(getContext(),yingPingBean.getResult());
         yingRe.setAdapter(yingPingAdapter);
+
 
     }
 

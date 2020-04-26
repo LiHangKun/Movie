@@ -2,8 +2,12 @@ package com.bw.movie.util;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Environment;
 
+import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.previewlibrary.ZoomMediaLoader;
 
 /**
  * 104.创建一个app类，继承Application
@@ -18,7 +22,16 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fresco.initialize(this);
+        ImagePipelineConfig pipelineConfig = ImagePipelineConfig.newBuilder(this)
+                .setMainDiskCacheConfig(DiskCacheConfig.newBuilder(this)
+                        .setBaseDirectoryPath(Environment.getDownloadCacheDirectory())//设置外部SD卡缓存目录文件
+                        .setBaseDirectoryName("cc/")//设置缓存名称
+                        .setMaxCacheSize(10*1024*1024)//设置缓存大小
+                        .build())
+                .build();
+        //初始化
+        Fresco.initialize(this, pipelineConfig);
+
         mContext = getApplicationContext();
 
     }

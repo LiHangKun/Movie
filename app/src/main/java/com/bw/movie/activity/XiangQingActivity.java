@@ -93,6 +93,12 @@ public class XiangQingActivity extends BaseActivity implements HomePageXiangQing
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        showDialog();
+    }
+
+    @Override
     public void initData() {
         Intent intent = getIntent();
         movieId = intent.getIntExtra("movieId", 0);
@@ -102,7 +108,9 @@ public class XiangQingActivity extends BaseActivity implements HomePageXiangQing
         drawerLayout.setInitialState(DrawerLayout.State.Close);
         BasePresenter basePresenter = getmPresenter();
         if (basePresenter instanceof HomePageXiangQingPresenter) {
+
             ((HomePageXiangQingPresenter) basePresenter).getXiang(movieId);
+
         }
 
         xiangOne = new XiangOne();
@@ -141,6 +149,7 @@ public class XiangQingActivity extends BaseActivity implements HomePageXiangQing
 
     @Override
     public void getXiangQingSucc(XiangQingBean xiangQingBean) {
+        hindDialog();
         Glide.with(this).load(xiangQingBean.getResult().getImageUrl()).into(ivMax);
         tvPing.setText("评分 " + xiangQingBean.getResult().getScore() + "分");
         tvCount.setText("评论 " + xiangQingBean.getResult().getCommentNum() + "万条");

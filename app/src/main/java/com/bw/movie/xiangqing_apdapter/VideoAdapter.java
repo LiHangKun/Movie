@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -41,7 +42,11 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         Uri uri = Uri.parse(list.get(position).getVideoUrl());
+        MediaController controller = new MediaController(context);
         ((ViewHolder)holder).vv.setVideoURI(uri);
+        controller.setMediaPlayer(((ViewHolder)holder).vv);
+        ((ViewHolder)holder).vv.setMediaController(controller);
+
         ((ViewHolder)holder).tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

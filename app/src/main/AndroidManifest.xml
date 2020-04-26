@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
     package="com.bw.movie">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,6 +29,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"></uses-permission>
     <application
+
         android:networkSecurityConfig="@xml/network_security_config"
         android:name=".util.App"
         android:allowBackup="true"
@@ -38,7 +41,6 @@
         <activity android:name=".activity.XiangQingActivity"></activity>
         <activity android:name=".activity.GengDuoActivity"></activity>
         <activity android:name=".activity.SearchActivtiy" />
-        <activity android:name=".fragment.One" />
         <activity android:name=".activity.YingYuan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,6 +52,7 @@
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
+            android:taskAffinity="com.bw.movie"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoDisplay" />
         <activity android:name=".activity.LoginActivity"></activity>
