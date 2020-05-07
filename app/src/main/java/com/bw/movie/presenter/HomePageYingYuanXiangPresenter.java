@@ -3,6 +3,7 @@ package com.bw.movie.presenter;
 import com.bw.movie.base.BasePresenter;
 import com.bw.movie.base.BaseView;
 import com.bw.movie.bean.LoginBean;
+import com.bw.movie.bean.YingYuanPingBean;
 import com.bw.movie.bean.YingYuanXiangBean;
 import com.bw.movie.contral.HomePageLoginContral;
 import com.bw.movie.contral.HomePageYingYuanXiangContral;
@@ -40,6 +41,27 @@ public class HomePageYingYuanXiangPresenter extends BasePresenter implements Hom
                 BaseView view = getView();
                 if(view instanceof HomePageYingYuanXiangContral.getView){
                     ((HomePageYingYuanXiangContral.getView)view).getYingYuanFiuld(str);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getYingYuanPing(int cinemaId, int page, int count) {
+        homePageYingYuanXiangModel.getYingYuanPing(cinemaId, page, count, new HomePageYingYuanXiangContral.getModel.CallBackYingYuanPing() {
+            @Override
+            public void getYingYuanPingSucc(YingYuanPingBean yingYuanPingBean) {
+                BaseView view = getView();
+                if(view instanceof HomePageYingYuanXiangContral.getView){
+                    ((HomePageYingYuanXiangContral.getView)view).getYingYuanPingSucc(yingYuanPingBean);
+                }
+            }
+
+            @Override
+            public void getYingYuanPingFiuld(String str) {
+                BaseView view = getView();
+                if(view instanceof HomePageYingYuanXiangContral.getView){
+                    ((HomePageYingYuanXiangContral.getView)view).getYingYuanPingFiuld(str);
                 }
             }
         });

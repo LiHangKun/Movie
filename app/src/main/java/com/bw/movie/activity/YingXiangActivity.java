@@ -10,13 +10,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.adapter.YingXiangYouShiAdapter;
 import com.bw.movie.base.BaseActivity;
 import com.bw.movie.base.BasePresenter;
+import com.bw.movie.bean.YingYuanPingBean;
 import com.bw.movie.bean.YingYuanXiangBean;
 import com.bw.movie.contral.HomePageYingYuanXiangContral;
 import com.bw.movie.fragment.ying_yuan_xiang.FragemenYingYuanXiangLeft;
@@ -46,10 +49,13 @@ public class YingXiangActivity extends BaseActivity implements HomePageYingYuanX
     TabLayout yingXiangReTab;
     @BindView(R.id.ying_xiang_vp)
     ViewPager yingXiangVp;
+    @BindView(R.id.tiao_paiqi)
+    LinearLayout tiao_paiqi;
     private YingXiangYouShiAdapter yingXiangYouShiAdapter;
     private ArrayList<Fragment> arrayList;
     private ArrayList<String> arrayList1;
     private FragemenYingYuanXiangLeft fragemenYingYuanXiangLeft;
+    private int id;
 
     @Override
     public BasePresenter initPresenter() {
@@ -72,7 +78,7 @@ public class YingXiangActivity extends BaseActivity implements HomePageYingYuanX
     @Override
     public void initData() {
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id", 0);
+        id = intent.getIntExtra("id", 0);
         BasePresenter basePresenter = getmPresenter();
         if (basePresenter instanceof HomePageYingYuanXiangPresenter) {
             ((HomePageYingYuanXiangPresenter) basePresenter).getYingYuan(id);
@@ -88,6 +94,14 @@ public class YingXiangActivity extends BaseActivity implements HomePageYingYuanX
         arrayList1.add("影院详情");
         arrayList1.add("影院评价");
         yingXiangReTab.setupWithViewPager(yingXiangVp);
+        tiao_paiqi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(YingXiangActivity.this, PaiQiActivity.class);
+                intent1.putExtra("id",id);
+                startActivity(intent1);
+            }
+        });
     }
     public class HuaDong extends FragmentPagerAdapter {
 
@@ -138,6 +152,16 @@ public class YingXiangActivity extends BaseActivity implements HomePageYingYuanX
 
     @Override
     public void getYingYuanFiuld(String str) {
+
+    }
+
+    @Override
+    public void getYingYuanPingSucc(YingYuanPingBean yingYuanPingBean) {
+
+    }
+
+    @Override
+    public void getYingYuanPingFiuld(String str) {
 
     }
 

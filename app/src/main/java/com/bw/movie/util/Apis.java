@@ -12,6 +12,7 @@ import com.bw.movie.bean.GuanJianZiBean;
 import com.bw.movie.bean.GuanZhuBean;
 import com.bw.movie.bean.JiangShangYingBean;
 import com.bw.movie.bean.LoginBean;
+import com.bw.movie.bean.PaiQiBean;
 import com.bw.movie.bean.PingDianZanBean;
 import com.bw.movie.bean.PingHui;
 import com.bw.movie.bean.ReMenMovieBean;
@@ -22,6 +23,7 @@ import com.bw.movie.bean.TuiYingBean;
 import com.bw.movie.bean.XiangQingBean;
 import com.bw.movie.bean.XieYingPingBean;
 import com.bw.movie.bean.YingPingBean;
+import com.bw.movie.bean.YingYuanPingBean;
 import com.bw.movie.bean.YingYuanXiangBean;
 import com.bw.movie.bean.YuYueBean;
 import com.bw.movie.bean.ZhengShangYingBean;
@@ -130,12 +132,12 @@ public interface Apis {
     @POST("movie/v1/verify/movieCommentGreat")
     @FormUrlEncoded
     Observable<PingDianZanBean> getPingDianZan(@Field("commentId")int commentId);
+
     //查询影评评论回复
     @GET("movie/v1/findCommentReply")
     Observable<PingHui> getPingHui(@Query("commentId")int commentId,@Query("page")int page,@Query("count")int count);
 
     //添加评论回复
-
     @POST("movie/v1/verify/commentReply")
     @FormUrlEncoded
     Observable<TianPingHuiFuBean> getTianPingHui(@Field("commentId")int commentId,@Field("replyContent")String replyContent);
@@ -143,4 +145,12 @@ public interface Apis {
     //影院详情
     @GET("cinema/v1/findCinemaInfo")
     Observable<YingYuanXiangBean> getYingYuanXiang(@Query("cinemaId")int cinemaId);
+
+    //影院评论
+    @GET("cinema/v1/findAllCinemaComment")
+    Observable<YingYuanPingBean> getYingYuanPing(@Query("cinemaId")int cinemaId,@Query("page")int page,@Query("count")int count);
+
+    //电影排期
+    @GET("cinema/v2/findCinemaScheduleList")
+    Observable<PaiQiBean> getPaiQi(@Query("cinemaId")int cinemaId,@Query("page")int page,@Query("count")int count);
 }

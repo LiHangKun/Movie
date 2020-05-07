@@ -10,6 +10,7 @@ import com.bw.movie.R;
 import com.bw.movie.base.BaseFragment;
 import com.bw.movie.base.BasePresenter;
 import com.bw.movie.bean.YingYuanXiangBean;
+import com.bw.movie.presenter.HomePageYingYuanXiangPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,7 +31,7 @@ public class FragemenYingYuanXiangLeft extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void shou(YingYuanXiangBean yingYuanXiangBean){
-        if(xiangLeftDidian!=null){
+        if(yingYuanXiangBean!=null){
             yingXiangFangshi.setText(yingYuanXiangBean.getResult().getVehicleRoute()+"");
             xiangLeftDidian.setText(yingYuanXiangBean.getResult().getAddress()+"");
             yingXiangDianhua.setText(yingYuanXiangBean.getResult().getPhone()+"");
@@ -60,7 +61,7 @@ public class FragemenYingYuanXiangLeft extends BaseFragment {
 
     @Override
     protected BasePresenter initPresenter() {
-        return null;
+        return new HomePageYingYuanXiangPresenter(this);
     }
 
     @Override

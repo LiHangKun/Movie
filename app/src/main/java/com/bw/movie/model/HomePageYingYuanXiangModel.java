@@ -1,6 +1,7 @@
 package com.bw.movie.model;
 
 import com.bw.movie.bean.LoginBean;
+import com.bw.movie.bean.YingYuanPingBean;
 import com.bw.movie.bean.YingYuanXiangBean;
 import com.bw.movie.contral.HomePageLoginContral;
 import com.bw.movie.contral.HomePageYingYuanXiangContral;
@@ -36,6 +37,38 @@ public class HomePageYingYuanXiangModel implements HomePageYingYuanXiangContral.
                     public void onError(Throwable e) {
                         if(callBackYingYuanXiang!=null){
                             callBackYingYuanXiang.getYingYuanFiuld(e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getYingYuanPing(int cinemaId, int page, int count, final CallBackYingYuanPing callBackYingYuanPing) {
+        RetrofitManager.getInstance().getApis().getYingYuanPing(cinemaId,page,count)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<YingYuanPingBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(YingYuanPingBean yingYuanPingBean) {
+                        if(callBackYingYuanPing!=null){
+                            callBackYingYuanPing.getYingYuanPingSucc(yingYuanPingBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if(callBackYingYuanPing!=null){
+                            callBackYingYuanPing.getYingYuanPingFiuld(e.getMessage());
                         }
                     }
 
