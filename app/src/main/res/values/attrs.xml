@@ -16,4 +16,7 @@
         <attr name="search_backgroup" format="reference"/><!-- 搜索框背景 -->
         <attr name="search_padding" format="reference"/><!-- 搜索框背景 -->
     </declare-styleable>
+
+
+
 </resources>

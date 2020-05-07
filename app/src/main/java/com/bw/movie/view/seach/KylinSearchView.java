@@ -1,7 +1,9 @@
 package com.bw.movie.view.seach;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.IBinder;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.util.App;
 import com.bw.movie.util.DimensionUtils;
 
 
@@ -174,15 +177,12 @@ public class KylinSearchView extends FrameLayout implements SearchExtendImpl{
         final InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
         if (edtSearch != null) {
             // 点击事件
-            edtSearch.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
+
                     edtSearch.setFocusable(true);//设置输入框可聚集
                     edtSearch.setFocusableInTouchMode(true);//设置触摸聚焦
                     edtSearch.requestFocus();//请求焦点
                     edtSearch.findFocus();//获取焦点
-                }
-            });
+
             // 监听焦点
             edtSearch.setOnFocusChangeListener(new OnFocusChangeListener() {
                 @Override
@@ -216,7 +216,6 @@ public class KylinSearchView extends FrameLayout implements SearchExtendImpl{
             });
         }
     }
-
     /**
      *  获取搜索框的内容
      */
@@ -283,6 +282,7 @@ public class KylinSearchView extends FrameLayout implements SearchExtendImpl{
     public void setTextSize(float size){
         edtSearch.setTextSize(size);
     }
+
 
 
 

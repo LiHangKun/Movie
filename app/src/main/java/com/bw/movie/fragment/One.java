@@ -53,6 +53,7 @@ import com.bw.movie.bean.YuYueBean;
 import com.bw.movie.bean.ZhengShangYingBean;
 import com.bw.movie.contral.HomePageFrgOneContral;
 import com.bw.movie.presenter.HomePageFrgOnePresenter;
+import com.bw.movie.util.SPUtils;
 import com.stx.xhb.xbanner.XBanner;
 
 import java.text.SimpleDateFormat;
@@ -322,6 +323,10 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
                             + aMapLocation.getStreetNum());
                     //Toast.makeText(getContext(), buffer.toString(), Toast.LENGTH_LONG).show();
                     city1 = aMapLocation.getCity();
+                    double longitude = aMapLocation.getLongitude();
+                    double latitude = aMapLocation.getLatitude();
+                    SPUtils.putString(getActivity(),SPUtils.USERINFO_NAME,"jingdu",longitude+"");
+                    SPUtils.putString(getActivity(),SPUtils.USERINFO_NAME,"weidu",latitude+"");
                     Log.i("chengshi", "" + city1 + aMapLocation.getStreet());
                     //Toast.makeText(getContext(), ""+city1+"11", Toast.LENGTH_SHORT).show();
                     city.setText(city1 + "");

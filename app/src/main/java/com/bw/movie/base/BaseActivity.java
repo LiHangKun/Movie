@@ -1,13 +1,18 @@
 package com.bw.movie.base;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -77,4 +82,43 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     public abstract void initView();
 
     public abstract void initData();
+    //点击空白处
+    //事件分发控制
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View view = getCurrentFocus();
+            if (isHideInput(view, ev)) {
+                HideSoftInput(view.getWindowToken());
+                view.clearFocus();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+    /**
+     * 判定是否需要隐藏
+     */
+    private boolean isHideInput(View v, MotionEvent ev) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0], top = l[1], bottom = top + v.getHeight(), right = left + v.getWidth();
+            if (ev.getX() > left && ev.getX() < right && ev.getY() > top && ev.getY() < bottom) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * 隐藏软键盘
+     */
+    private void HideSoftInput(IBinder token) {
+        if (token != null) {
+            InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+    //点击空白处完
 }

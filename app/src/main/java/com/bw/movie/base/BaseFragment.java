@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements BaseView {
     P mPresenter;
     private Dialog mDialog;
+    public boolean mViewInflateFinished;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,9 +28,33 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         mPresenter=initPresenter();
         ButterKnife.bind(this,inflate);
         initView(inflate);
-
-        initData();
+        mViewInflateFinished=true;
+        doNetWork();
         return inflate;
+    }
+    /**
+     * 尝试调用网络，先判断是否对用户可见
+     * 如果可见，调用抽象方法，让子类去调接口
+     */
+    private void doNetWork(){
+        if(getUserVisibleHint()){
+            initData();
+        }
+    }
+
+    /**
+     * fragment 提供的回调，回调当天fragment是否对用用户可见
+     * 他是在当这个 fragment 是否对用户的可见发生变化的时候
+     * @param isVisibleToUser false对用户不可见， true对用户可见
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        // 如果还没有加载过数据 && 用户切换到了这个fragment
+        // 那就开始加载数据
+        if (mViewInflateFinished && isVisibleToUser) {
+            initData();
+        }
     }
     public void showDialog(){
         if(mDialog == null){
@@ -50,6 +75,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
             mDialog.dismiss();
         }
     }
+
     protected abstract void initData();
 
     protected abstract P initPresenter();

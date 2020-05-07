@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -71,11 +74,15 @@ public class XiangQingActivity extends BaseActivity implements HomePageXiangQing
     TabLayout huachuTab;
     @BindView(R.id.huachuan_vp)
     ViewPager huachuanVp;
-
+    @BindView(R.id.xie_ying_ping)
+    TextView xie_ying_ping;
+    @BindView(R.id.xuanzuo)
+    Button xuanzuo;
     private ArrayList<String> tablist;
     private ArrayList<Fragment> arrayList;
     private int movieId;
     private XiangOne xiangOne;
+    private XiangQingBean.ResultBean result;
 
     @Override
     public BasePresenter initPresenter() {
@@ -90,6 +97,11 @@ public class XiangQingActivity extends BaseActivity implements HomePageXiangQing
     @Override
     public void initView() {
 
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return true;
     }
 
     @Override
@@ -134,8 +146,36 @@ public class XiangQingActivity extends BaseActivity implements HomePageXiangQing
         huachuTab.addTab(huachuTab.newTab().setText(tablist.get(2)));
         huachuTab.addTab(huachuTab.newTab().setText(tablist.get(3)));
         huachuTab.setupWithViewPager(huachuanVp);
-
+        ivShap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(XiangQingActivity.this, "关闭", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        xie_ying_ping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(XiangQingActivity.this, XieYingPing.class);
+                if(result!=null){
+                    String name = result.getName();
+                    int movieId = result.getMovieId();
+                    intent1.putExtra("moviId",movieId);
+                    intent1.putExtra("name",name);
+                }
+                startActivity(intent1);
+            }
+        });
+        xuanzuo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(XiangQingActivity.this, XuanZuoActivity.class);
+                startActivity(intent1);
+            }
+        });
     }
+
+
 
     @Override
     public void getGuanZhuSucc(GuanZhuBean guanZhuBean) {
@@ -149,6 +189,7 @@ public class XiangQingActivity extends BaseActivity implements HomePageXiangQing
 
     @Override
     public void getXiangQingSucc(XiangQingBean xiangQingBean) {
+        result = xiangQingBean.getResult();
         hindDialog();
         Glide.with(this).load(xiangQingBean.getResult().getImageUrl()).into(ivMax);
         tvPing.setText("评分 " + xiangQingBean.getResult().getScore() + "分");

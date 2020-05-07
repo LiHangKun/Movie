@@ -163,11 +163,16 @@ public class DrawerLayout extends RelativeLayout
     @Override
     public boolean dispatchTouchEvent(MotionEvent event)
     {
-        boolean isConsumed = false;
+        return super.dispatchTouchEvent(event);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
         switch (event.getActionMasked())
         {
             case MotionEvent.ACTION_DOWN :
-                isConsumed = processDown(event);
+                processDown(event);
                 break;
             case MotionEvent.ACTION_MOVE :
                 processMove(event);
@@ -177,13 +182,13 @@ public class DrawerLayout extends RelativeLayout
                 break;
         }
 
-        return isConsumed || super.dispatchTouchEvent(event);
+        return true;
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
-        return isDragging;
+        return super.onInterceptTouchEvent(ev);
     }
 
     private void init(Context context, AttributeSet attrs)

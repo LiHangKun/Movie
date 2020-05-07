@@ -50,21 +50,9 @@ public class XiangOne extends BaseFragment implements HomePageXiangQingContral.g
         super.onResume();
         showDialog();
     }
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void initView(View inflate) {
-        jieshaoRe.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-        jieshaoRetwo.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+
         int id = SPUtils.getInt(getContext(), "id", "id");
         BasePresenter basePresenter = getmPresenter();
         if(basePresenter instanceof HomePageXiangQingPresenter){

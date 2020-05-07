@@ -6,4 +6,5 @@
             <certificates src="user" overridePins="true" />
         </trust-anchors>
     </base-config>
+
 </network-security-config>

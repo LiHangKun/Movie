@@ -1,5 +1,6 @@
 package com.bw.movie.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,9 @@ import com.bw.movie.contral.HomePageSearchContral;
 import com.bw.movie.presenter.HomePageSearchPresenter;
 import com.bw.movie.view.seach.KylinSearchView;
 import com.bw.movie.view.seach.OnSearchListener;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +52,14 @@ public class SearchActivtiy extends BaseActivity implements HomePageSearchContra
 
     @Override
     public void initData() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+                           public void run() {
+                               InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                               inputManager.showSoftInput(svDefault, 0);
+                           }
+                       },
+                200);
         final BasePresenter basePresenter = getmPresenter();
         quanbu.setOnClickListener(new View.OnClickListener() {
             @Override

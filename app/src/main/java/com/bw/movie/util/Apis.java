@@ -4,16 +4,25 @@ package com.bw.movie.util;
 
 
 import com.bw.movie.bean.BannerBean;
+import com.bw.movie.bean.DiBean;
 import com.bw.movie.bean.EmailBean;
+import com.bw.movie.bean.FuYingBean;
 import com.bw.movie.bean.GouPiaoBean;
 import com.bw.movie.bean.GuanJianZiBean;
 import com.bw.movie.bean.GuanZhuBean;
 import com.bw.movie.bean.JiangShangYingBean;
 import com.bw.movie.bean.LoginBean;
+import com.bw.movie.bean.PingDianZanBean;
+import com.bw.movie.bean.PingHui;
 import com.bw.movie.bean.ReMenMovieBean;
 import com.bw.movie.bean.RegisterBean;
+import com.bw.movie.bean.TianPingHuiFuBean;
+import com.bw.movie.bean.TianYingPingBean;
+import com.bw.movie.bean.TuiYingBean;
 import com.bw.movie.bean.XiangQingBean;
+import com.bw.movie.bean.XieYingPingBean;
 import com.bw.movie.bean.YingPingBean;
+import com.bw.movie.bean.YingYuanXiangBean;
 import com.bw.movie.bean.YuYueBean;
 import com.bw.movie.bean.ZhengShangYingBean;
 
@@ -97,5 +106,41 @@ public interface Apis {
     @GET("movie/v2/findAllMovieComment")
     Observable<YingPingBean> getYingPing(@Query("movieId") int movieId,@Query("page")int page,@Query("count")int count);
 
+    //写影视评论
+    @GET("movie/v1/verify/movieComment")
+    Observable<XieYingPingBean> getXieYing(@Query("movieId") int movieId, @Query("commentContent")String commentContent, @Query("score")double score);
 
+    //推荐影院信息
+    @GET("cinema/v1/findRecommendCinemas")
+    Observable<TuiYingBean> getTuiYing(@Query("page")int page, @Query("count")int count);
+
+    //查询附近影院
+    @GET("cinema/v1/findNearbyCinemas")
+    Observable<FuYingBean> getFuYing(@Query("longitude")String longitude,@Query("latitude")String latitude,@Query("page")int apge, @Query("count")int count);
+
+    @GET("cinema/v2/findCinemaByRegion")
+    Observable<DiBean> getDi(@Query("regionId")int regionId);
+
+    //添加用户对影片的评论
+    @POST("movie/v1/verify/movieComment")
+    @FormUrlEncoded
+    Observable<TianYingPingBean> getTianYing(@Field("movieId")int movid,@Field("commentContent")String commentContent,@Field("score") double score);
+
+    //电影评论点赞
+    @POST("movie/v1/verify/movieCommentGreat")
+    @FormUrlEncoded
+    Observable<PingDianZanBean> getPingDianZan(@Field("commentId")int commentId);
+    //查询影评评论回复
+    @GET("movie/v1/findCommentReply")
+    Observable<PingHui> getPingHui(@Query("commentId")int commentId,@Query("page")int page,@Query("count")int count);
+
+    //添加评论回复
+
+    @POST("movie/v1/verify/commentReply")
+    @FormUrlEncoded
+    Observable<TianPingHuiFuBean> getTianPingHui(@Field("commentId")int commentId,@Field("replyContent")String replyContent);
+
+    //影院详情
+    @GET("cinema/v1/findCinemaInfo")
+    Observable<YingYuanXiangBean> getYingYuanXiang(@Query("cinemaId")int cinemaId);
 }
