@@ -44,6 +44,7 @@
         <activity android:name=".activity.XieYingPing" />
         <activity android:name=".activity.XiangQingActivity" />
         <activity android:name=".activity.GengDuoActivity" />
+        <activity android:name=".activity.WoGuanZhuActivity"/>
         <activity android:name=".activity.SearchActivtiy" />
         <activity android:name=".activity.YingYuan">
             <intent-filter>

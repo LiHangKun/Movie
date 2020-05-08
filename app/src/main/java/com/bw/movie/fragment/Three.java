@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.WoGuanZhuActivity;
 import com.bw.movie.base.BaseFragment;
 import com.bw.movie.base.BasePresenter;
 import com.bw.movie.presenter.HomePageTuiYingPresenter;
