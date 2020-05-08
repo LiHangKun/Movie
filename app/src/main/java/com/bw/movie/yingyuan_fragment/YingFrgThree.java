@@ -32,6 +32,7 @@ public class YingFrgThree extends BaseFragment implements HomePageTuiYingContral
     RecyclerView diReOne;
     @BindView(R.id.id_re_two)
     RecyclerView idReTwo;
+    private DiQuAdapter diQuAdapter;
 
     @Override
     protected void initData() {
@@ -51,14 +52,16 @@ public class YingFrgThree extends BaseFragment implements HomePageTuiYingContral
         arrayList.add("怀柔区");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         diReOne.setLayoutManager(linearLayoutManager);
-        final DiQuAdapter diQuAdapter = new DiQuAdapter(getContext(),arrayList);
+        diQuAdapter = new DiQuAdapter(getContext(),arrayList);
         diReOne.setAdapter(diQuAdapter);
         diQuAdapter.setOnCliCk(new DiQuAdapter.Onclick() {
             @Override
             public void click(int a) {
+                diQuAdapter.setmPosition(a);
+                diQuAdapter.notifyDataSetChanged();
                 BasePresenter basePresenter = getmPresenter();
                 if(basePresenter instanceof HomePageTuiYingPresenter){
-                    Toast.makeText(getContext(), ""+a, Toast.LENGTH_SHORT).show();
+
                     ((HomePageTuiYingPresenter)basePresenter).getDi(a+1);
                 }
 

@@ -9,9 +9,11 @@ import com.bw.movie.bean.EmailBean;
 import com.bw.movie.bean.FuYingBean;
 import com.bw.movie.bean.GouPiaoBean;
 import com.bw.movie.bean.GuanJianZiBean;
+import com.bw.movie.bean.GuanYingYuanBean;
 import com.bw.movie.bean.GuanZhuBean;
 import com.bw.movie.bean.JiangShangYingBean;
 import com.bw.movie.bean.LoginBean;
+import com.bw.movie.bean.MyGuanDianyingBean;
 import com.bw.movie.bean.PaiQiBean;
 import com.bw.movie.bean.PingDianZanBean;
 import com.bw.movie.bean.PingHui;
@@ -153,4 +155,12 @@ public interface Apis {
     //电影排期
     @GET("cinema/v2/findCinemaScheduleList")
     Observable<PaiQiBean> getPaiQi(@Query("cinemaId")int cinemaId,@Query("page")int page,@Query("count")int count);
+
+    //查询用户关注电影列表
+    @GET("user/v2/verify/findUserFollowMovieList")
+    Observable<MyGuanDianyingBean> getGuanDingYing(@Query("page")int page,@Query("count")int count);
+
+    //查询用户关注影院列表
+    @GET("user/v2/verify/findUserFollowCinemaList")
+    Observable<GuanYingYuanBean> getGuanYingYuan(@Query("page")int page, @Query("count")int count);
 }

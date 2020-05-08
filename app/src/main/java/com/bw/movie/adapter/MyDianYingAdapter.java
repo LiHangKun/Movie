@@ -6,57 +6,58 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bw.movie.R;
-import com.bw.movie.bean.GuanJianZiBean;
+import com.bw.movie.bean.MyGuanDianyingBean;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
-public class SearchDianYingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private final Context context;
-    private final List<GuanJianZiBean.ResultBean> list;
+public class MyDianYingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    Context context;
+    List<MyGuanDianyingBean.ResultBean> list;
 
 
-    public SearchDianYingAdapter(Context context, List<GuanJianZiBean.ResultBean> list) {
+    public MyDianYingAdapter(Context context) {
         this.context = context;
-        this.list = list;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = View.inflate(context, R.layout.item_search, null);
-        ViewHolderSearch viewHolder = new ViewHolderSearch(view);
+        View inflate = View.inflate(context, R.layout.item_wo_dian_ying_left, null);
+        ViewHolder viewHolder = new ViewHolder(inflate);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        ((ViewHolder)viewHolder).searchName.setText(list.get(i).getName()+"");
+        ((ViewHolder)viewHolder).searchDaoyan.setText(list.get(i).getDirector()+"");
+        ((ViewHolder)viewHolder).searchPingfen.setText(list.get(i).getScore()+"分");
+        ((ViewHolder)viewHolder).searchZhuyan.setText(list.get(i).getStarring()+"");
+        Glide.with(context).load(list.get(i).getImageUrl()).into(((ViewHolder)viewHolder).searchImg);
 
-        ((ViewHolderSearch) viewHolder).searchName.setText(list.get(i).getName() + "");
-        ((ViewHolderSearch) viewHolder).searchDaoyan.setText("导演" + list.get(i).getDirector() + "");
-        ((ViewHolderSearch) viewHolder).searchZhuyan.setText("主演" + list.get(i).getStarring() + "");
-        ((ViewHolderSearch) viewHolder).searchPingfen.setText("评分" + list.get(i).getScore() + "");
-        Glide.with(context).load(list.get(i).getImageUrl()).into(((ViewHolderSearch)viewHolder).searchImg);
     }
 
     @Override
     public int getItemCount() {
-        if(list!=null){
+        if (list != null) {
             return list.size();
         }
         return 0;
     }
 
-    public class ViewHolderSearch extends RecyclerView.ViewHolder {
+    public void setData(List<MyGuanDianyingBean.ResultBean> result) {
+        list = result;
+        notifyDataSetChanged();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.search_img)
         ImageView searchImg;
         @BindView(R.id.search_name)
@@ -67,10 +68,7 @@ public class SearchDianYingAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView searchZhuyan;
         @BindView(R.id.search_pingfen)
         TextView searchPingfen;
-        @BindView(R.id.rl)
-        RelativeLayout rl;
-
-        public ViewHolderSearch(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -37,7 +37,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.PaiQiActivity"></activity>
+        <activity android:name=".activity.PaiQiActivity" />
         <activity android:name=".activity.YingXiangActivity" />
         <activity android:name=".activity.XuanZuoActivity" />
         <activity android:name=".activity.PingXiangActivity" />
@@ -59,7 +59,9 @@
             android:launchMode="singleTop"
             android:taskAffinity="com.bw.movie"
             android:theme="@android:style/Theme.NoDisplay" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LoginActivity" >
+
+        </activity>
         <activity android:name=".activity.RegActivity" />
 
         <meta-data
