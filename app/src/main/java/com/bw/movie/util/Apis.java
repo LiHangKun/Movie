@@ -4,6 +4,7 @@ package com.bw.movie.util;
 
 
 import com.bw.movie.bean.BannerBean;
+import com.bw.movie.bean.ChaYuYueBean;
 import com.bw.movie.bean.DiBean;
 import com.bw.movie.bean.EmailBean;
 import com.bw.movie.bean.FuYingBean;
@@ -13,7 +14,10 @@ import com.bw.movie.bean.GuanYingYuanBean;
 import com.bw.movie.bean.GuanZhuBean;
 import com.bw.movie.bean.JiangShangYingBean;
 import com.bw.movie.bean.LoginBean;
+import com.bw.movie.bean.MyDianYingPingBean;
 import com.bw.movie.bean.MyGuanDianyingBean;
+import com.bw.movie.bean.MyXiangBean;
+import com.bw.movie.bean.MyYingYuanPingBean;
 import com.bw.movie.bean.PaiQiBean;
 import com.bw.movie.bean.PingDianZanBean;
 import com.bw.movie.bean.PingHui;
@@ -22,15 +26,21 @@ import com.bw.movie.bean.RegisterBean;
 import com.bw.movie.bean.TianPingHuiFuBean;
 import com.bw.movie.bean.TianYingPingBean;
 import com.bw.movie.bean.TuiYingBean;
+import com.bw.movie.bean.UpLoadHeadPicBean;
+import com.bw.movie.bean.XiaDanBean;
 import com.bw.movie.bean.XiangQingBean;
 import com.bw.movie.bean.XieYingPingBean;
+import com.bw.movie.bean.YiJianFanKuiBean;
 import com.bw.movie.bean.YingPingBean;
 import com.bw.movie.bean.YingYuanPingBean;
 import com.bw.movie.bean.YingYuanXiangBean;
 import com.bw.movie.bean.YuYueBean;
 import com.bw.movie.bean.ZhengShangYingBean;
+import com.bw.movie.bean.ZhiFuBean;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -163,4 +173,39 @@ public interface Apis {
     //查询用户关注影院列表
     @GET("user/v2/verify/findUserFollowCinemaList")
     Observable<GuanYingYuanBean> getGuanYingYuan(@Query("page")int page, @Query("count")int count);
+
+    //查询用户预约电影信息
+    @GET("user/v2/verify/findUserReserve")
+    Observable<ChaYuYueBean> getChaYuYue();
+
+    //根据用户ID查询用户信息
+    @GET("user/v1/verify/getUserInfoByUserId")
+    Observable<MyXiangBean> getMyXiang();
+
+    //查询我对电影的评论列表
+    @GET("user/v2/verify/findMyMovieCommentList")
+    Observable<MyDianYingPingBean> getMyDianYingPing(@Query("page")int page,@Query("count")int count);
+
+    //查询我对影院评论列表
+    @GET("user/v2/verify/findMyCinemaCommentList")
+    Observable<MyYingYuanPingBean> getMyYingYuanPing(@Query("page")int page, @Query("count")int count);
+
+    //意见反馈
+    @POST("tool/v1/verify/recordFeedBack")
+    @FormUrlEncoded
+    Observable<YiJianFanKuiBean> getYiJianFanKui(@Field("content")String content);
+
+    //头像上传
+    @POST("user/v1/verify/uploadHeadPic")
+    Observable<UpLoadHeadPicBean> getUpLoadHeadPicBean(@Body RequestBody body);
+
+    //创建订单
+    @POST("movie/v2/verify/buyMovieTickets")
+    @FormUrlEncoded
+    Observable<XiaDanBean> getGouPiao(@Field("scheduleId")int scheduleId,@Field("seat")String seat,@Field("sign")String sign);
+
+    //支付
+    @POST("movie/v2/verify/pay")
+    @FormUrlEncoded
+    Observable<ZhiFuBean> getZhiFu(@Field("payType")int payType, @Field("orderId")String orderId);
 }

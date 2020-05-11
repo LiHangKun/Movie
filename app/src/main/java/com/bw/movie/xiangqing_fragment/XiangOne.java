@@ -48,7 +48,7 @@ public class XiangOne extends BaseFragment implements HomePageXiangQingContral.g
     @Override
     public void onResume() {
         super.onResume();
-        showDialog();
+
     }
     @Override
     protected void initView(View inflate) {
@@ -78,7 +78,7 @@ public class XiangOne extends BaseFragment implements HomePageXiangQingContral.g
 
     @Override
     public void getXiangQingSucc(XiangQingBean xiangQingBean) {
-        hindDialog();
+
         jieshaoJieshao.setText(xiangQingBean.getResult().getSummary()+"");
         jieshoaDaoyan.setText("导演("+xiangQingBean.getResult().getMovieDirector().size()+")");
         GridLayoutManager gridLayoutManagertwo = new GridLayoutManager(getContext(), 4);

@@ -2,22 +2,13 @@ package com.bw.movie.fragment;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,10 +53,13 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.EasyPermissions.PermissionCallbacks;
 
-public class One extends BaseFragment implements HomePageFrgOneContral.getView, LocationSource, AMapLocationListener, View.OnClickListener , PermissionCallbacks {
+public class One extends BaseFragment implements HomePageFrgOneContral.getView, LocationSource, AMapLocationListener, View.OnClickListener, PermissionCallbacks {
 
     @BindView(R.id.xb)
     XBanner xb;
@@ -89,6 +83,7 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
     TextView gengthree;
     @BindView(R.id.map)
     MapView mapView;
+    Unbinder unbinder;
     //AMap是地图对象
     private AMap aMap;
 
@@ -115,21 +110,19 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
 
     public static void setXiangQingId(Context context, int movieId) {
         Intent intent = new Intent(context, XiangQingActivity.class);
-        intent.putExtra("movieId",movieId);
+        intent.putExtra("movieId", movieId);
         context.startActivity(intent);
     }
 
 
     @Override
     protected void initData() {
-
         basePresenter = getmPresenter();
         if (basePresenter instanceof HomePageFrgOnePresenter) {
-            showDialog();
             ((HomePageFrgOnePresenter) basePresenter).getBanner();
-            ((HomePageFrgOnePresenter) basePresenter).getReMen(1, 5);
-            ((HomePageFrgOnePresenter) basePresenter).getZhengShangYing(1, 5);
-            ((HomePageFrgOnePresenter) basePresenter).JiangShang(1, 16);
+            ((HomePageFrgOnePresenter) basePresenter).getReMen(1, 100);
+            ((HomePageFrgOnePresenter) basePresenter).getZhengShangYing(1, 100);
+            ((HomePageFrgOnePresenter) basePresenter).JiangShang(1, 100);
         }
         sou_dianying.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,27 +141,12 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
     protected BasePresenter initPresenter() {
         return new HomePageFrgOnePresenter(this);
     }
-    boolean isYou=false;
+
+    boolean isYou = false;
+
     @Override
     protected void initView(View inflate) {
-        String[] mPermissionList = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
-        if (EasyPermissions.hasPermissions(getContext(), mPermissionList)) {
-            isYou=true;
-            Toast.makeText(getContext(), "已有权限", Toast.LENGTH_SHORT).show();
-            if (aMap == null) {
-                aMap = mapView.getMap();
-                //设置显示定位按钮 并且可以点击
-                UiSettings settings = aMap.getUiSettings();
-                aMap.setLocationSource(this);//设置了定位的监听
-                // 是否显示定位按钮
-                settings.setMyLocationButtonEnabled(true);
-                aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
-            }
-            location();
-        } else {
-            //未同意过,或者说是拒绝了，再次申请权限
-            EasyPermissions.requestPermissions(getActivity(), "需要定位的权限", 1, mPermissionList);
-        }
+
 
     }
 
@@ -224,7 +202,6 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
 
     @Override
     public void getZhengShangYingSucc(ZhengShangYingBean zhengShangYingBean) {
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         reyingRe.setLayoutManager(linearLayoutManager);
         zhengReYingAdapter = new ZhengReYingAdapter(getContext(), zhengShangYingBean.getResult());
@@ -239,7 +216,6 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
     @Override
     public void getJiangShangSucc(JiangShangYingBean jiangShangYingBean) {
         result = jiangShangYingBean.getResult();
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         jijiangRe.setLayoutManager(linearLayoutManager);
         comingSoonMovieAdapter = new ComingSoonMovieAdapter(getContext(), jiangShangYingBean.getResult());
@@ -325,8 +301,8 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
                     city1 = aMapLocation.getCity();
                     double longitude = aMapLocation.getLongitude();
                     double latitude = aMapLocation.getLatitude();
-                    SPUtils.putString(getActivity(),SPUtils.USERINFO_NAME,"jingdu",longitude+"");
-                    SPUtils.putString(getActivity(),SPUtils.USERINFO_NAME,"weidu",latitude+"");
+                    SPUtils.putString(getActivity(), SPUtils.USERINFO_NAME, "jingdu", longitude + "");
+                    SPUtils.putString(getActivity(), SPUtils.USERINFO_NAME, "weidu", latitude + "");
                     Log.i("chengshi", "" + city1 + aMapLocation.getStreet());
                     //Toast.makeText(getContext(), ""+city1+"11", Toast.LENGTH_SHORT).show();
                     city.setText(city1 + "");
@@ -357,7 +333,7 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
+        switch (id) {
             case R.id.gengone:
                 Intent intent = new Intent(getContext(), GengDuoActivity.class);
                 startActivity(intent);
@@ -375,6 +351,29 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
 
     }
 
+
+
+    @OnClick(R.id.city)
+    public void onViewClicked() {
+        String[] mPermissionList = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(getContext(), mPermissionList)) {
+            isYou=true;
+            Toast.makeText(getContext(), "已有权限", Toast.LENGTH_SHORT).show();
+            if (aMap == null) {
+                aMap = mapView.getMap();
+                //设置显示定位按钮 并且可以点击
+                UiSettings settings = aMap.getUiSettings();
+                aMap.setLocationSource(this);//设置了定位的监听
+                // 是否显示定位按钮
+                settings.setMyLocationButtonEnabled(true);
+                aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
+            }
+            location();
+        } else {
+            //未同意过,或者说是拒绝了，再次申请权限
+            EasyPermissions.requestPermissions(getActivity(), "需要定位的权限", 1, mPermissionList);
+        }
+    }
 
 
     public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
@@ -423,289 +422,6 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
         mLocationClient.startLocation();
     }
 
-    //权限
-/*
-    private static final int RC_CAMERA_AND_RECORD_AUDIO = 10000;
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-    *//**
-     * 去申请权限
-     *//*
-    @AfterPermissionGranted(RC_CAMERA_AND_RECORD_AUDIO)
-    private void requestPermissions() {
-        String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE};
-
-        //判断有没有权限
-        if (EasyPermissions.hasPermissions(getContext(), perms)) {
-            // 如果有权限了,
-            // doing something就做你该做的事情
-            openCamera();
-        } else {
-            // 如果没有权限, 就去申请权限
-            // this: 上下文
-            // Dialog显示的正文
-            // RC_CAMERA_AND_RECORD_AUDIO 请求码, 用于回调的时候判断是哪次申请
-            // perms 就是你要申请的权限
-            EasyPermissions.requestPermissions(getActivity(), "该页面需要您开启定位,否则可能使用不了", RC_CAMERA_AND_RECORD_AUDIO, perms);
-        }
-    }
-    *//**
-     * 权限申请成功的回调
-     *
-     * @param requestCode 申请权限时的请求码
-     * @param perms       申请成功的权限集合
-     *//*
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        Log.i("aaaa", "onPermissionsGranted: ");
-        if (requestCode != RC_CAMERA_AND_RECORD_AUDIO) {
-            return;
-        }
-        for (int i = 0; i < perms.size(); i++) {
-            if (perms.get(i).equals(perms.get(i))) {
-                Log.i("aaaa", "onPermissionsGranted: " + "相机权限成功");
-                openCamera();
-
-            }*//* else if (perms.get(i).equals(Manifest.permission.RECORD_AUDIO)) {
-                Log.i("aaaa", "onPermissionsGranted: " + "录制音频权限成功");
-            }*//*
-        }
-    }
-    *//**
-     * 权限申请拒绝的回调
-     *
-     * @param requestCode 申请权限时的请求码
-     * @param perms       申请拒绝的权限集合
-     *//*
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        Log.i("aaaa", "onPermissionsDenied: ");
-
-        if (requestCode != RC_CAMERA_AND_RECORD_AUDIO) {
-            return;
-        }
-
-        for (int i = 0; i < perms.size(); i++) {
-            if (perms.get(i).equals(perms.get(i))) {
-                Log.i("aaaa", "onPermissionsDenied: " + "地图权限拒绝");
-            } *//*else if (perms.get(i).equals(Manifest.permission.RECORD_AUDIO)) {
-                Log.i("aaaa", "onPermissionsDenied: " + "地图权限拒绝");
-            }*//*
-        }
-
-        //如果有一些权限被永久的拒绝, 就需要转跳到 设置-->应用-->对应的App下去开启权限
-        if (EasyPermissions.somePermissionPermanentlyDenied(getActivity(), perms)) {
-            new AppSettingsDialog.Builder(getActivity())
-                    .setTitle("权限已经被您拒绝")
-                    .setRationale("如果不打开权限则无法使用该功能,点击确定去打开权限")
-                    .setRequestCode(10001)//用于onActivityResult回调做其它对应相关的操作
-                    .build()
-                    .show();
-        }
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 10001) {
-            Toast.makeText(getContext(), "从开启权限的页面转跳回来", Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void openCamera() {
-        //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，实现地图生命周期管理
-        if (aMap == null) {
-            aMap = mapView.getMap();
-            //设置显示定位按钮 并且可以点击
-            UiSettings settings = aMap.getUiSettings();
-            aMap.setLocationSource(this);//设置了定位的监听
-            // 是否显示定位按钮
-            settings.setMyLocationButtonEnabled(true);
-            aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
-        }
-        location();
-    }*/
-   /* protected String[] needPermissions = {
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_PHONE_STATE
-            };
-    private static final int PERMISSON_REQUESTCODE = 0;
-    private boolean isNeedCheck = true;
-    *//**
-     * 判断是否需要检测，防止不停的弹框
-     *//*
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(isNeedCheck){
-            checkPermissions(needPermissions);
-        }
-    }
-    private void openCamera() {
-        //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，实现地图生命周期管理
-        if (aMap == null) {
-            aMap = mapView.getMap();
-            //设置显示定位按钮 并且可以点击
-            UiSettings settings = aMap.getUiSettings();
-            aMap.setLocationSource(this);//设置了定位的监听
-            // 是否显示定位按钮
-            settings.setMyLocationButtonEnabled(true);
-            aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
-        }
-        location();
-    }
-
-    *//**
-     *
-     * @param
-     * @since 2.5.0
-     *
-     *//*
-    private void checkPermissions(String... permissions) {
-        List<String> needRequestPermissonList = findDeniedPermissions(permissions);
-         if (null != needRequestPermissonList
-                && needRequestPermissonList.size() > 0) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    needRequestPermissonList.toArray(
-                            new String[needRequestPermissonList.size()]),
-                    PERMISSON_REQUESTCODE);
-        }
-    }
-    *//**
-     * 获取权限集中需要申请权限的列表
-     *
-     * @param permissions
-     * @return
-     * @since 2.5.0
-     *
-     *//*
-    private List<String> findDeniedPermissions(String[] permissions) {
-        List<String> needRequestPermissonList = new ArrayList<String>();
-        for (String perm : permissions) {
-            if (ContextCompat.checkSelfPermission(getContext(),
-                    perm) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.shouldShowRequestPermissionRationale(
-                    getActivity(), perm)) {
-                needRequestPermissonList.add(perm);
-            }
-        }
-        return needRequestPermissonList;
-
-    }
-    *//**
-     * 检测是否说有的权限都已经授权
-     * @param grantResults
-     * @return
-     * @since 2.5.0
-     *
-     *//*
-    private boolean verifyPermissions(int[] grantResults) {
-        for (int result : grantResults) {
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-        }
-
-            openCamera();
-        return true;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] paramArrayOfInt) {
-        if (requestCode == PERMISSON_REQUESTCODE) {
-            if (!verifyPermissions(paramArrayOfInt)) {
-                showMissingPermissionDialog();
-                isNeedCheck = false;
-            }
-        }
-    }
-    *//**
-
-     * 显示提示信息
-
-     *
-
-     * @since 2.5.0
-
-     *
-
-     *//*
-
-    private void showMissingPermissionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.notifyTitle);
-        builder.setMessage(R.string.notifyMsg);
-        // 拒绝, 退出应用
-        builder.setNegativeButton(R.string.cancel,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getActivity().finish();
-                    }
-                });
-
-
-
-        builder.setPositiveButton(R.string.setting,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startAppSettings();
-                    }
-                });
-        builder.setCancelable(false);
-        builder.show();
-    }
-    *//**
-
-     *  启动应用的设置
-
-     *
-
-     * @since 2.5.0
-
-     *
-
-     *//*
-
-    private void startAppSettings() {
-
-        Intent intent = new Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-
-        intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
-
-        startActivity(intent);
-        if (aMap == null) {
-            aMap = mapView.getMap();
-            //设置显示定位按钮 并且可以点击
-            UiSettings settings = aMap.getUiSettings();
-            aMap.setLocationSource(this);//设置了定位的监听
-            // 是否显示定位按钮
-            settings.setMyLocationButtonEnabled(true);
-            aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
-        }
-        location();
-
-    }
-
-
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            getActivity().finish();
-            return true;
-        }
-        return getActivity().onKeyDown(keyCode, event);
-    }
-*/
 
     String[] needPermissions = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -717,12 +433,12 @@ public class One extends BaseFragment implements HomePageFrgOneContral.getView, 
 
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
-        Toast.makeText(getContext(), "用户授权", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        Toast.makeText(getContext(), "没有定位权限", Toast.LENGTH_SHORT).show();
+
     }
 
 }

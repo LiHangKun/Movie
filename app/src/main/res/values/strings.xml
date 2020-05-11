@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Movie</string>
 
-    <string name="notifyTitle">提示</string>
-    <string name="notifyMsg">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。</string>
-    <string name="setting">设置</string>
-    <string name="cancel">取消</string>
+
+    <string name="app_tip">提示</string>
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
 </resources>

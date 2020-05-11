@@ -4,10 +4,14 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
+import com.bw.movie.activity.Constants;
+import com.bw.movie.activity.XuanZuoActivity;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.previewlibrary.ZoomMediaLoader;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 /**
  * 104.创建一个app类，继承Application
@@ -31,6 +35,10 @@ public class App extends Application {
                 .build();
         //初始化
         Fresco.initialize(this, pipelineConfig);
+
+
+
+
 
         mContext = getApplicationContext();
 

@@ -27,8 +27,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+
         android:name=".util.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -37,6 +39,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.YiJianFanKui"></activity>
+        <activity android:name=".activity.MyXiangActivity" />
+        <activity android:name=".activity.MyPingLunActivity" />
+        <activity android:name=".activity.WoYuYue" />
         <activity android:name=".activity.PaiQiActivity" />
         <activity android:name=".activity.YingXiangActivity" />
         <activity android:name=".activity.XuanZuoActivity" />
@@ -44,24 +50,34 @@
         <activity android:name=".activity.XieYingPing" />
         <activity android:name=".activity.XiangQingActivity" />
         <activity android:name=".activity.GengDuoActivity" />
-        <activity android:name=".activity.WoGuanZhuActivity"/>
+        <activity android:name=".activity.WoGuanZhuActivity" />
         <activity android:name=".activity.SearchActivtiy" />
-        <activity android:name=".activity.YingYuan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:launchMode="singleTop"
+            android:exported="true">
+        </activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+
+        <activity android:name=".activity.YingYuan">
+
         </activity>
         <activity android:name=".activity.YinDao" />
+
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity="com.bw.movie"
             android:theme="@android:style/Theme.NoDisplay" />
-        <activity android:name=".activity.LoginActivity" >
 
+        <activity android:name=".activity.LoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activity.RegActivity" />
 

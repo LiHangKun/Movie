@@ -28,6 +28,7 @@ public class YingFrgOne extends BaseFragment implements HomePageTuiYingContral.g
     protected void initData() {
         BasePresenter basePresenter = getmPresenter();
         if (basePresenter instanceof HomePageTuiYingPresenter) {
+            showDialog();
             ((HomePageTuiYingPresenter) basePresenter).getTuiYing(1, 1000);
         }
 
@@ -51,6 +52,7 @@ public class YingFrgOne extends BaseFragment implements HomePageTuiYingContral.g
 
     @Override
     public void getTuiYingSucc(TuiYingBean tuiYingBean) {
+        hindDialog();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         re.setLayoutManager(linearLayoutManager);
         TuiYingAdapter tuiYingAdapter = new TuiYingAdapter(getContext(),tuiYingBean.getResult());

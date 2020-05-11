@@ -4,9 +4,12 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -125,4 +128,22 @@ public class RetrofitManager {
         builder.setType(MultipartBody.FORM);
         return builder.build();
     }
+    //xiangji
+    public RequestBody getRequsetBody(List<File> files, HashMap<String,String> map){
+//        if (map.size() < 1){
+//            return null;
+//        }
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        for (Map.Entry<String,String> entry:map.entrySet()){
+            Log.i("xxx","key = "+entry.getKey()+"value = "+entry.getValue());
+            builder.addFormDataPart(entry.getKey(),entry.getValue()+"");
+        }
+
+        for (int i = 0; i <files.size(); i++){
+            builder.addFormDataPart("image",files.get(i).getName(),RequestBody.create(MediaType.parse("image/jepg"),files.get(i)));
+        }
+
+        return builder.build();
+    }
+
 }
